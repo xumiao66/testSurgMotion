@@ -1,0 +1,137 @@
+/* 画廊整体容器样式 */
+.gallery {
+  overflow: hidden;       /* 隐藏溢出内容，确保只显示当前可见区域 */
+  width: 100%;            /* 宽度占满父容器 */
+}
+
+/* 画廊内部容器，设置黑色背景 */
+.gallery-inner {
+  background-color: #000; /* 黑色背景 */
+  padding: 1px;          /* 内边距，控制画廊内容与边界的距离 */
+}
+
+/* 每行图片的包装器 */
+.image-row-wrapper {
+  display: flex;          /* 使用Flex布局 */
+  overflow: hidden;       /* 隐藏溢出内容 */
+  margin: 10px 0;         /* 上下外边距，控制行与行之间的间距 */
+
+  /* CSS变量：定义图片宽度、数量和间距，用于动态计算容器宽度 */
+  --img-width: 250px;     /* 单张图片的基础宽度 */
+  --img-count: 24;        /* 每行图片的数量（根据实际情况修改） */
+  --gap: 3px;             /* 图片之间的间距 */
+
+  /* 计算每行的总宽度：图片宽度 × 数量 + 间距 × (数量-1) */
+  --row-width: calc(var(--img-width) * var(--img-count) + var(--gap) * (var(--img-count) - 1));
+
+  /* 容器总宽度：原始行宽度的2倍（用于容纳原始行和克隆行） */
+  width: calc(var(--row-width) * 2);
+}
+
+/* 图片行样式 */
+.image-row {
+  display: flex;          /* 使用Flex布局使图片横向排列 */
+  gap: var(--gap);        /* 图片之间的间距 */
+  width: var(--row-width); /* 行宽度等于计算的总宽度 */
+  animation: scroll-left 20s linear infinite; /* 应用向左滚动动画 */
+}
+
+/* 克隆行样式，与原始行保持相同的动画 */
+.image-row.clone {
+  animation: scroll-left-clone 30s linear infinite;
+}
+
+/* 图片样式 */
+.image-row img {
+  width: var(--img-width); /* 图片宽度 */
+  height: 180px;           /* 图片高度 */
+  object-fit: cover;       /* 图片填充方式：保持比例并覆盖整个容器 */
+  border-radius: 0;        /* 取消圆角，使用直角 */
+}
+
+/* 原始行的滚动动画 */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }                /* 初始位置 */
+  100% { transform: translateX(calc(-1 * var(--row-width))); } /* 滚动到原始行完全离开视口 */
+}
+
+/* 克隆行的滚动动画，与原始行动画同步 */
+@keyframes scroll-left-clone {
+  0% { transform: translateX(0); }                /* 初始位置 */
+  100% { transform: translateX(calc(-1 * var(--row-width))); } /* 滚动到克隆行完全替代原始行 */
+}
+
+/* 鼠标悬停时暂停动画 */
+.image-row-wrapper:hover .image-row,
+.image-row-wrapper:hover .image-row.clone {
+  animation-play-state: paused;
+}
+
+/* 为不同行设置不同的动画速度，增加视觉变化 */
+.image-row-wrapper:nth-child(1) .image-row,
+.image-row-wrapper:nth-child(1) .image-row.clone {
+  animation-duration: 38s; /* 第一行的滚动周期 */
+}
+
+.image-row-wrapper:nth-child(2) .image-row,
+.image-row-wrapper:nth-child(2) .image-row.clone {
+  animation-duration: 45s; /* 第二行的滚动周期 */
+}
+
+.image-row-wrapper:nth-child(3) .image-row,
+.image-row-wrapper:nth-child(3) .image-row.clone {
+  animation-duration: 52s; /* 第三行的滚动周期 */
+}
+
+/* 响应式设计：大屏幕 */
+@media (max-width: 1200px) {
+  .image-row-wrapper {
+    --img-width: 200px;     /* 减小图片宽度 */
+  }
+}
+
+/* 响应式设计：中等屏幕 */
+@media (max-width: 992px) {
+  .image-row-wrapper {
+    --img-width: 150px;     /* 进一步减小图片宽度 */
+    --gap: 4px;            /* 减小图片间距 */
+    margin: 12px 0;        /* 减小行间距 */
+  }
+
+  .image-row img {
+    height: 115px;          /* 减小图片高度 */
+  }
+}
+
+/* 响应式设计：小屏幕 */
+@media (max-width: 768px) {
+  .image-row-wrapper {
+    --img-width: 100px;     /* 小屏幕下的图片宽度 */
+    --gap: 3px;            /* 小屏幕下的图片间距 */
+    margin: 10px 0;        /* 小屏幕下的行间距 */
+  }
+
+  .image-row img {
+    height: 75px;          /* 小屏幕下的图片高度 */
+  }
+
+  .gallery-inner {
+    padding: 5px;          /* 减小画廊内边距 */
+  }
+}
+
+/* 响应式设计：超小屏幕 */
+@media (max-width: 576px) {
+  .image-row-wrapper {
+    --img-width: 50px;     /* 超小屏幕下的图片宽度 */
+    --gap: 1px;            /* 超小屏幕下的图片间距 */
+  }
+
+  .image-row img {
+    height: 40px;          /* 超小屏幕下的图片高度 */
+  }
+
+  .gallery-inner {
+    padding: 2px;          /* 超小屏幕下的画廊内边距 */
+  }
+}

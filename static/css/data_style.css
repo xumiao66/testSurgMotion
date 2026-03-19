@@ -1,0 +1,165 @@
+/* ✅ 全局修复：防止横向滚动 */
+body {
+  overflow-x: hidden;
+}
+
+/* =========================================
+   1. 顶部统计卡片 (Info Cards)
+   ========================================= */
+.info-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* 居中对齐 */
+  margin-bottom: 40px;
+}
+
+.info-card {
+  flex: 1 1 200px; /* 允许弹性伸缩，最小宽度200px */
+  max-width: 250px;
+  background: linear-gradient(135deg, #f0f4ff, #e6ecff);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h2 {
+  font-size: 2em;
+  color: #2a4d9b;
+  margin-bottom: 5px;
+  font-family: 'Google Sans', sans-serif;
+}
+
+.info-card p {
+  font-size: 1.1em;
+  color: #555;
+  font-weight: 500;
+}
+
+/* =========================================
+   2. 器官网格卡片 (Organ Grid Layout)
+   ========================================= */
+#dataset-distribution {
+  padding-bottom: 3rem;
+}
+
+.organ-col {
+  padding: 10px;
+}
+
+.organ-card {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  overflow: hidden;
+  height: 240px; /* 固定高度，确保整齐 */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid #f0f0f0;
+  border-top: 3px solid #3273dc; /* 顶部默认蓝条 */
+  cursor: default;
+}
+
+/* 悬停整体效果 */
+.organ-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(50, 115, 220, 0.15);
+  border-color: #3273dc;
+}
+
+/* --- 核心内容区域 (图标+标题) --- */
+.organ-main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性过渡 */
+}
+
+.organ-icon {
+  height: 72px; /* 图标尺寸 */
+  width: auto;
+  margin-bottom: 15px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.organ-title {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #363636;
+}
+
+/* 悬停时：主内容上移并缩小 */
+.organ-card:hover .organ-main {
+  top: 30%; 
+}
+.organ-card:hover .organ-icon {
+  transform: scale(0.9);
+}
+
+/* --- 详情区域 (悬停滑出) --- */
+.organ-details {
+  position: absolute;
+  bottom: -100%; /* 默认完全隐藏 */
+  left: 0;
+  width: 100%;
+  padding: 15px 20px;
+  background: linear-gradient(to top, #ffffff 95%, rgba(255,255,255,0.8));
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+/* 悬停时：详情滑入 */
+.organ-card:hover .organ-details {
+  bottom: 0;
+  opacity: 1;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  color: #666;
+  border-bottom: 1px dashed #eee;
+  padding-bottom: 4px;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.detail-row i {
+  width: 20px;
+  text-align: center;
+  margin-right: 5px;
+  color: #3273dc;
+}
+
+.detail-val {
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .info-card {
+    flex: 1 1 100%; /* 手机端统计卡片占满一行 */
+  }
+  .organ-card {
+    height: 200px; /* 手机端卡片稍微矮一点 */
+  }
+}

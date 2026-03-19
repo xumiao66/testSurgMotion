@@ -1,0 +1,202 @@
+.publication-authors a {
+  color: inherit;         /* 继承父元素颜色 */
+  text-decoration: none;  /* 去掉下划线 */
+}
+
+.footer a {
+  color: inherit;           /* 继承父元素颜色 */
+}
+
+.footer-logo {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+/* 统计 */
+@media (min-width: 768px) {
+  .footer-logo {
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .footer-logo {
+    max-width: 500px;
+  }
+}
+
+/* =========================================
+   Added for Partner/Institution Logos
+   ========================================= */
+
+/* Logo 图片统一通用样式 */
+.partner-logo {
+  max-height: 70px; /* 限制最大高度，确保视觉统一 */
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  margin: 10px auto;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+/* 鼠标悬停效果 */
+.partner-logo:hover {
+  transform: scale(1.05); /* 轻微放大 */
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* 合作版块的小标题样式 */
+.partner-section-title {
+  font-family: 'Google Sans', sans-serif;
+  color: #4a4a4a;
+  margin-bottom: 1.5rem !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+
+/* --- 无缝滚动画廊样式 --- */
+
+.gallery-scroll-container {
+  width: 100%;
+  overflow: hidden; /* 隐藏超出屏幕的部分 */
+  background-color: #ffffff; /* 背景色 */
+  /*background-color: #4a4a4a; /* 背景色 */
+  padding: 40px 0; /* 上下留白 */
+  position: relative;
+}
+
+.gallery-scroll-track {
+  display: flex;
+  width: max-content; /* 宽度由内容决定，不换行 */
+  gap: 20px; /* 图片之间的间距 */
+  /* 动画设置：
+     scroll-left: 动画名称
+     40s: 滚动一圈需要的时间 (数值越大越慢)
+     linear: 匀速运动
+     infinite: 无限循环
+  */
+  animation: scroll-left 30s linear infinite;
+}
+
+/* 鼠标悬停时暂停播放，方便用户看细节 */
+.gallery-scroll-container:hover .gallery-scroll-track {
+  animation-play-state: paused;
+}
+
+.scroll-slide {
+  flex-shrink: 0; /* 防止图片被压缩 */
+  display: flex;
+  align-items: center;
+}
+
+.scroll-slide img {
+  height: 300px; /* ✅ 关键：固定高度，让不同长宽比的图看起来整齐 */
+  width: auto;   /* 宽度自适应 */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 添加阴影增加质感 */
+  max-width: none; /* 防止被 Bulma 的默认样式限制 */
+}
+
+/* 定义滚动动画 */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* 注意：这里的 -50% 是关键。
+       因为我们复制了一份图片，所以轨道总长度是 200%。
+       当移动到 -50% 时，刚好是第二组图的开头，瞬间重置回 0%，实现无缝。
+       间距(gap)可能会导致微小的跳动，如果 gap 很大，建议用 JS 计算，但 CSS 通常足够。
+    */
+    transform: translateX(calc(-50% - 15px)); /* -50% 再微调半个 gap 的距离 */
+  }
+}
+
+/* 手机端适配：缩小高度 */
+@media (max-width: 768px) {
+  .scroll-slide img {
+    height: 180px; /* 手机上高度减小 */
+  }
+  .gallery-scroll-track {
+    gap: 15px;
+  }
+}
+
+/* =========================================
+   Click-to-Zoom & Modal Styles (Fixed)
+   ========================================= */
+
+/* --- 1. 图片样式：普通状态 --- */
+.click-to-zoom {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 确保图片完整显示，不裁剪 */
+  cursor: zoom-in;     /* 鼠标移上去显示“放大镜”图标，提示可点击 */
+  transition: opacity 0.3s ease;
+  /* ⚠️ 关键：这里没有任何 transform: scale 代码，所以鼠标放上去绝对不会放大了 */
+}
+
+/* 仅在鼠标悬停时轻微改变透明度，作为交互反馈 */
+.click-to-zoom:hover {
+  opacity: 0.9;
+}
+
+/* --- 2. 模态框（弹窗）样式 --- */
+.custom-modal-overlay {
+  display: none; /* ⚠️ 核心：默认必须是 none，这样那个“叉”平时才不会显示 */
+  position: fixed; /* 固定定位，覆盖整个屏幕 */
+  z-index: 99999;  /* 保证在所有内容之上 */
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.95); /* 深黑色背景 */
+  backdrop-filter: blur(5px); /* 背景模糊增加高级感 */
+}
+
+/* 模态框里的图片 */
+.custom-modal-content {
+  margin: auto;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 90vw;  /* 最大宽度 90% 视口 */
+  max-height: 90vh; /* 最大高度 90% 视口 */
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  animation: modalZoom 0.3s; /* 弹出动画 */
+}
+
+/* 关闭按钮（那个叉）样式 */
+.custom-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 50px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 100000;
+  line-height: 1;
+}
+
+.custom-close-btn:hover,
+.custom-close-btn:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 简单的放大动画 */
+@keyframes modalZoom {
+  from {transform:scale(0.8); opacity: 0} 
+  to {transform:scale(1); opacity: 1}
+}

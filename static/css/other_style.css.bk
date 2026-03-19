@@ -1,0 +1,40 @@
+.publication-authors a {
+  color: inherit;         /* 继承父元素颜色 */
+  text-decoration: none;  /* 去掉下划线 */
+}
+
+.echocare-logo {
+  width: 200px; /* 根据你的设计调整大小 */
+  height: auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.echocare-logo:hover {
+  transform: translateY(-5px) scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.footer a {
+  color: inherit;           /* 继承父元素颜色 */
+}
+
+.footer-logo {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+/* 统计 */
+@media (min-width: 768px) {
+  .footer-logo {
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .footer-logo {
+    max-width: 500px;
+  }
+}

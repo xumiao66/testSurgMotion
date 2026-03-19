@@ -1,0 +1,334 @@
+// function renderDataMap(containerId = "interactive-map") {
+//   const datasetCounts = {
+//     "Bangladesh": 1, "Brazil": 1, "Canada": 1, "Switzerland": 1, "China": 13,
+//     "Germany": 2, "Algeria": 1, "Egypt": 1, "Spain": 2, "France": 1,
+//     "United Kingdom": 5, "Ireland": 1, "India": 1, "Iran": 1, "Netherlands": 2,
+//     "Norway": 2, "Poland": 1, "Romania": 1, "Sierra Leone": 1, "United States": 6
+//   };
+
+//   const countryCentroids = {
+//     "Bangladesh": [23.685, 90.356], "Brazil": [-14.235, -51.925],
+//     "Canada": [56.130, -106.346], "Switzerland": [46.818, 8.227],
+//     "China": [35.861, 104.195], "Germany": [51.165, 10.451],
+//     "Algeria": [28.033, 1.659], "Egypt": [26.820, 30.802],
+//     "Spain": [40.463, -3.749], "France": [46.227, 2.213],
+//     "United Kingdom": [55.378, -3.436], "Ireland": [53.142, -7.692],
+//     "India": [20.593, 78.962], "Iran": [32.427, 53.688],
+//     "Netherlands": [52.132, 5.291], "Norway": [60.472, 8.468],
+//     "Poland": [51.919, 19.145], "Romania": [45.943, 24.966],
+//     "Sierra Leone": [8.460, -11.779], "United States": [37.090, -95.712]
+//   };
+
+//   const map = L.map(containerId, {
+//     center: [20, 0],
+//     zoom: 2,
+//     minZoom: 2,
+//     maxZoom: 6,
+//     maxBounds: [[-85, -180], [85, 180]],
+//     maxBoundsViscosity: 1.0
+//   });
+
+//   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+//     attribution: '&copy; OpenStreetMap contributors'
+//   }).addTo(map);
+
+//   // 自定义 SVG 图标路径
+//   const customIcon = L.icon({
+//     iconUrl: 'icon/location.png', // ← 你的 SVG 文件路径
+//     iconSize: [25, 25],              // 图标尺寸
+//     iconAnchor: [12, 12],            // 图标中心点
+//     popupAnchor: [0, -12]            // 弹窗位置偏移
+//   });
+
+//   for (const [name, count] of Object.entries(datasetCounts)) {
+//     const coords = countryCentroids[name];
+//     if (coords) {
+//       L.marker(coords, { icon: customIcon }).addTo(map)
+//         .bindPopup(`<strong>${name}</strong><br>Datasets: ${count}`);
+//     }
+//   }
+// }
+
+// window.renderDataMap = renderDataMap;
+
+
+
+
+// function renderDataMap(containerId = "interactive-map") {
+//   // 1. 定义解剖部位数据 (Name -> Detail Info)
+//   const organData = {
+//     "Brain": {
+//       label: "Brain (Neurosurgery)",
+//       datasets: "PitVis, Private",
+//       videos: "2,303",
+//       hours: "2,860.85"
+//     },
+//     "Ophthalmic": {
+//       label: "Ophthalmic (Eye)",
+//       datasets: "OphNet, CATARACTS",
+//       videos: "1,969",
+//       hours: "230.76"
+//     },
+//     "Breast": {
+//       label: "Breast",
+//       datasets: "Egosurgery",
+//       videos: "21",
+//       hours: "10.55"
+//     },
+//     "Bronchi": {
+//       label: "Bronchi",
+//       datasets: "SYSU-100",
+//       videos: "--",
+//       hours: "--"
+//     },
+//     "Gallbladder": {
+//       label: "Gallbladder",
+//       datasets: "Cholec80",
+//       videos: "80",
+//       hours: "51.25"
+//     },
+//     "Prostate": {
+//       label: "Prostate",
+//       datasets: "Psi-AVA",
+//       videos: "8",
+//       hours: "20.45"
+//     }
+//   };
+
+//   // 2. 定义解剖位置坐标 [Latitude (Y), Longitude (X)]
+//   // 假设地图中心是 [0,0]，基于人体结构从上到下分布
+//   const organCoordinates = {
+//     "Brain": [65, 0],         // 头部
+//     "Ophthalmic": [55, 0],    // 眼部
+//     "Bronchi": [35, 0],       // 胸腔中部
+//     "Breast": [30, -25],      // 胸部一侧
+//     "Gallbladder": [10, 15],  // 腹部右侧 (解剖学位置)
+//     "Prostate": [-30, 0]      // 下腹部
+//   };
+
+//   // 初始化 Leaflet 地图
+//   const map = L.map(containerId, {
+//     center: [10, 0], // 调整中心点以适应人体图
+//     zoom: 3,
+//     minZoom: 2,
+//     maxZoom: 5,
+//     zoomControl: false, // 隐藏缩放控件以获得更清洁的外观
+//     attributionControl: false
+//   });
+
+//   // 使用空白图层或人体解剖图层
+//   // 关键：这里需要将背景图 CSS 中的 URL 替换为人体解剖图
+//   L.tileLayer('', {
+//     opacity: 0 // 不加载实际地图瓦片，只依靠 CSS 背景图
+//   }).addTo(map);
+
+//   // 自定义 SVG 图标路径 (保持原样或更换为更小的点)
+//   const customIcon = L.icon({
+//     iconUrl: 'icon/location.png', // 建议换成一个实心的彩色圆点 icon/dot.png
+//     iconSize: [20, 20],
+//     iconAnchor: [10, 10],
+//     popupAnchor: [0, -10]
+//   });
+
+//   // 渲染标记
+//   for (const [key, info] of Object.entries(organData)) {
+//     const coords = organCoordinates[key];
+//     if (coords) {
+//       const marker = L.marker(coords, { icon: customIcon }).addTo(map);
+      
+//       // 构建 Popup 内容
+//       const popupContent = `
+//         <div style="font-family: 'Google Sans'; text-align: left;">
+//           <h4 style="margin: 0 0 5px 0; color: #3273dc;">${info.label}</h4>
+//           <div style="font-size: 0.9em; color: #555;">
+//             <strong>Data Source:</strong> ${info.datasets}<br>
+//             <strong>Videos:</strong> ${info.videos}<br>
+//             <strong>Duration:</strong> ${info.hours} h
+//           </div>
+//         </div>
+//       `;
+      
+//       marker.bindPopup(popupContent);
+//       // 默认打开 Brain 的标签作为示例，或者鼠标悬停时打开
+//       marker.on('mouseover', function (e) {
+//         this.openPopup();
+//       });
+//       marker.on('mouseout', function (e) {
+//         this.closePopup();
+//       });
+//     }
+//   }
+// }
+
+// window.renderDataMap = renderDataMap;
+
+
+
+function renderDataMap(containerId = "interactive-map") {
+  // 1. 定义解剖部位数据 (Name -> Detail Info)
+  // 已补充 Skill training, General surgery, Stomach, Uterus, Kidney, Liver, Colon
+  const organData = {
+    "Brain": {
+      label: "Brain (Neurosurgery)",
+      datasets: "PitVis, Private",
+      videos: "2,303",
+      hours: "2,860.85"
+    },
+    "Ophthalmic": {
+      label: "Ophthalmic (Eye)",
+      datasets: "OphNet, CATARACTS",
+      videos: "1,969",
+      hours: "230.76"
+    },
+    "HandSkillTraining": {
+      label: "Hand Skill Training",
+      datasets: "Alxsuture, JIGSAWS",
+      videos: "206",
+      hours: "5.27"
+    },
+    "GeneralSurgery": {
+      label: "General Surgery",
+      datasets: "Youtube",
+      videos: "10,874",
+      hours: "125.16"
+    },
+    "Bronchi": {
+      label: "Bronchi",
+      datasets: "SYSU-100",
+      videos: "--",
+      hours: "--"
+    },
+    "Breast": {
+      label: "Breast",
+      datasets: "Egosurgery",
+      videos: "21",
+      hours: "10.55"
+    },
+    "Stomach": {
+      label: "Stomach (Gastro)",
+      datasets: "Multibypass",
+      videos: "180",
+      hours: "252.10"
+    },
+    "Liver": {
+      label: "Liver",
+      datasets: "PmLR50",
+      videos: "50",
+      hours: "6.95"
+    },
+    "Gallbladder": {
+      label: "Gallbladder",
+      datasets: "Cholec80",
+      videos: "80",
+      hours: "51.25"
+    },
+    "Kidney": {
+      label: "Kidney",
+      datasets: "M2CAI16",
+      videos: "41",
+      hours: "26.26"
+    },
+    "Colon": {
+      label: "Colon",
+      datasets: "EndoFM",
+      videos: "30,000",
+      hours: "45"
+    },
+    "Uterus": {
+      label: "Uterus",
+      datasets: "AutoLaparo",
+      videos: "25",
+      hours: "23.12"
+    },
+    "Prostate": {
+      label: "Prostate",
+      datasets: "Psi-AVA",
+      videos: "8",
+      hours: "20.45"
+    }
+  };
+
+  // 2. 定义解剖位置坐标 [Latitude (Y), Longitude (X)]
+  // 假设地图中心是 [0,0]，基于人体结构从上到下分布
+  // 坐标需要根据新的背景图 fig3.png 进行微调
+  const organCoordinates = {
+    "Brain": [53, 15],           // 头部
+    "Ophthalmic": [50.5, 21],      // 眼部
+    // SkillTraining 和 GeneralSurgery 通常不对应特定器官，放置在图侧边或上方概览区域,或者省略
+    "HandSkillTraining": [-11, 35], // 手侧
+    "GeneralSurgery": [-18, -37], // 手侧
+    "Bronchi": [30, 10],         // 胸腔上部
+    "Breast": [23, -23],        // 胸部一侧
+    "Liver": [20, 17],          // 腹部右上方
+    "Stomach": [3, 16],       // 腹部左上方
+    "Gallbladder": [16, 15],    // 肝脏下方
+    "Kidney": [-2, 8],        // 腹部后侧/两侧
+    "Colon": [5, -15],            // 腹部中心/下部
+    "Uterus": [-7, -18],         // 盆腔中部
+    "Prostate": [-7, 15]        // 盆腔下部
+  };
+
+  // 初始化 Leaflet 地图
+  const map = L.map(containerId, {
+    center: [15, 0], // 调整中心点以适应新的人体图布局
+    zoom: 3,
+    minZoom: 2,
+    maxZoom: 5,
+    zoomControl: false, // 隐藏缩放控件以获得更清洁的外观
+    attributionControl: false,
+    dragging: false,    // 禁止拖动
+    scrollWheelZoom: false, // 禁止滚轮缩放
+    //scrollWheelZoom: true,
+    doubleClickZoom: false // 禁止双击缩放
+  });
+
+  // 使用空白图层
+  // 关键：这里不加载实际地图瓦片，只依靠 HTML 中的 CSS 背景图
+  // 请确保在对应的 HTML section 中设置了正确的背景图路径，例如：
+  // background: url('img_other/fig3.png') center/contain no-repeat;
+  L.tileLayer('', {
+    opacity: 0 
+  }).addTo(map);
+
+  // 自定义 SVG 图标路径
+  const customIcon = L.icon({
+    //iconUrl: 'icon/location.png', // 建议换成一个醒目的颜色点
+    iconUrl: 'icon/icon_2.png',
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -10]
+  });
+
+  // 渲染标记
+  for (const [key, info] of Object.entries(organData)) {
+    const coords = organCoordinates[key];
+    if (coords) {
+      const marker = L.marker(coords, { icon: customIcon }).addTo(map);
+      
+      // 构建 Popup 内容
+      const popupContent = `
+        <div style="font-family: 'Google Sans'; text-align: left; min-width: 150px;">
+          <h4 style="margin: 0 0 8px 0; color: #3273dc; font-size: 1.1em;">${info.label}</h4>
+          <div style="font-size: 0.9em; color: #4a4a4a; line-height: 1.5;">
+            <div><i class="fas fa-database" style="margin-right: 6px; color: #888;"></i> <strong>Source:</strong> ${info.datasets}</div>
+            <div><i class="fas fa-video" style="margin-right: 6px; color: #888;"></i> <strong>Videos:</strong> ${info.videos}</div>
+            <div><i class="far fa-clock" style="margin-right: 6px; color: #888;"></i> <strong>Duration:</strong> ${info.hours} h</div>
+          </div>
+        </div>
+      `;
+      
+      marker.bindPopup(popupContent);
+      
+      // 鼠标悬停时打开 Popup
+      marker.on('mouseover', function (e) {
+        this.openPopup();
+      });
+      // 鼠标移出时关闭 Popup
+      marker.on('mouseout', function (e) {
+        this.closePopup();
+      });
+    }
+  }
+}
+
+window.renderDataMap = renderDataMap;

@@ -1,0 +1,61 @@
+/* 滚动数字容器 */
+.flip-container {
+  display: inline-flex;
+  gap: 4px;
+  font-size: 1.6em;
+  font-family: 'Raleway', sans-serif;
+}
+
+/* 单个数字外框（去掉背景和边框） */
+.digit {
+  --digit-height: 48px;
+  --digit-width: 32px;
+  position: relative;
+  width: var(--digit-width);
+  height: var(--digit-height);
+  background: rgba(255, 255, 255, 0.15); /* 半透明白底 */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 轻柔边框 */
+  border-radius: 6px;
+  backdrop-filter: blur(6px); /* 毛玻璃效果 */
+  -webkit-backdrop-filter: blur(6px); /* Safari 支持 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* 微弱阴影 */
+  overflow: hidden;
+}
+.digit:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+
+/* 数字滚动容器 */
+.digit-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.5, 1); /* 更柔和的滚动 */
+}
+
+/* 单个数字样式 */
+.digit-inner div {
+  height: var(--digit-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(54, 54, 54, 0.85); /* 白色但带透明感 */
+  font-size: 1em;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* 小屏幕适配 */
+@media (max-width: 600px) {
+  .digit {
+    --digit-height: 36px;
+    --digit-width: 24px;
+  }
+  .flip-container {
+    font-size: 1.3em;
+    gap: 3px;
+  }
+}

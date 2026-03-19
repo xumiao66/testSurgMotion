@@ -1,0 +1,142 @@
+ /*标题*/
+.result-divider-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.result-divider-flex .line {
+  flex: 1;
+  height: 1px;
+  background: #aaa;
+  opacity: 0.6;
+}
+
+.result-divider-flex .label {
+  font-size: 1.5em;
+  font-weight: 500;
+  color: #888;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+
+ /* 弹性布局容器 */
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start; /* 顶部对齐 */
+    gap: 40px; /* 弹性项目间距 */
+    padding: 0 20px;
+  }
+
+  /* 隐藏Knight Lab相关标识 */
+  .juxtapose a[href*="knightlab"] {
+    display: none !important;
+  }
+
+  .juxtapose .knightlab-logo,
+  .juxtapose .jx-logo {
+    display: none !important;
+  }
+
+  /* 弹性项目通用样式 */
+  .flex-item {
+    flex-grow: 1;
+    min-width: 320px; /* 最小宽度防止内容挤压 */
+  }
+
+  /* 案例卡片容器 */
+  .flex-cases {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px; /* 案例间间距 */
+  }
+
+  .case-card {
+    /* 调整为更大的卡片，默认每行3个以增大展示尺寸 */
+    flex-basis: calc(33.333% - 18px); /* 默认每行3个（卡片更大） */
+    min-width: 320px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+  }
+
+  .case-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .juxtapose-container {
+    width: 100%;
+    background-color: #f8f9fa; /* 背景色适配卡片 */
+  }
+
+  .juxtapose {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+/* 响应式弹性布局（带min-width区间控制） */
+@media (min-width: 993px) and (max-width: 1200px) {
+  /* 中等屏幕：993px ~ 1200px，每行3个案例 */
+  .case-card {
+    flex-basis: calc(33.33% - 16px);
+  }
+}
+
+@media (min-width: 577px) and (max-width: 992px) {
+  /* 小屏幕：577px ~ 992px，堆叠布局，每行2个案例 */
+  .text-section, .video-section {
+    flex-basis: 100%;
+  }
+
+  .case-card {
+    flex-basis: calc(50% - 12px);
+  }
+}
+
+@media (max-width: 576px) {
+  /* 超小屏幕：≤576px，每行1个案例 */
+  .case-card {
+    flex-basis: 100%;
+  }
+}
+
+@media (min-width: 1201px) {
+  /* 超大屏幕：≥1201px，恢复每行4个案例 */
+  .case-card {
+    flex-basis: calc(25% - 18px); /* 与原始桌面布局一致 */
+  }
+}
+
+/* Augmentation 部分的特殊调整 */
+@media (max-width: 1200px) {
+  /* 中等屏幕下，调整 Augmentation 标题到左侧 */
+  .columns_augmentation {
+    flex-direction: row; /* 保持水平布局 */
+  }
+
+  .text-section-aug {
+    order: 1; /* 标题在左 */
+    flex-basis: calc(33% - 20px);
+  }
+
+  .video-section-aug {
+    order: 2; /* 案例在右 */
+    flex-basis: calc(67% - 20px);
+  }
+}
+
+@media (max-width: 992px) {
+  /* 小屏幕下，Augmentation 改为垂直布局 */
+  .columns_augmentation {
+    flex-direction: column;
+  }
+
+  .text-section-aug, .video-section-aug {
+    flex-basis: 100%;
+  }
+}

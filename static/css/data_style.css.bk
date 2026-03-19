@@ -1,0 +1,133 @@
+/* ✅ 全局修复：防止横向滚动 */
+body {
+  overflow-x: hidden;
+}
+/* 卡片样式 */
+.info-card {
+  flex: 1 1 calc(50% - 20px);
+  background: linear-gradient(135deg, #f0f4ff, #e6ecff);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.6s ease;
+  opacity: 0;
+}
+
+.info-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h2 {
+  font-size: 2em;
+  color: #2a4d9b;
+  margin-bottom: 5px;
+}
+
+.info-card p {
+  font-size: 1em;
+  color: #555;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+#dataset-distribution {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* 主容器 */
+#dataset-distribution .container {
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* 弹性布局 */
+#dataset-distribution .flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+/* 左右模块 */
+#dataset-distribution .text-section {
+  flex-basis: 35%;
+  padding: 2% 2%;
+}
+
+#dataset-distribution .image-section {
+  flex-basis: 60%;
+  padding: 2% 2%;
+}
+
+/* 卡片容器 */
+.info-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+/* 地图样式 */
+#interactive-map {
+  width: 100%;
+  height: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* 中等屏幕：地图稍微压缩 */
+@media (max-width: 1200px) {
+  #interactive-map {
+    height: 400px;
+  }
+}
+
+/* ✅ 小屏幕优化 */
+@media (max-width: 768px) {
+  #dataset-distribution .flex-container {
+    flex-direction: column;
+    gap: 32px;
+    padding: 0 16px;
+  }
+
+  #dataset-distribution .text-section,
+  #dataset-distribution .image-section {
+    flex-basis: 100%;
+    padding: 0;
+  }
+
+  #interactive-map {
+    height: 280px;
+  }
+
+  .info-cards {
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .info-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+/* ✅ 超小屏幕进一步优化 */
+@media (max-width: 480px) {
+  .info-card {
+    padding: 16px;
+  }
+
+  #interactive-map {
+    height: 240px;
+  }
+}
