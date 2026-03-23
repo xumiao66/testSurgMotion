@@ -174,7 +174,7 @@ function renderOrganGrid() {
     { label: "Colon",         img: "intestine.png",   datasets: "EndoFM",             videos: "30k",    hours: "45" }, 
     { label: "Uterus",        img: "uterus.png",      datasets: "AutoLaparo",         videos: "25",     hours: "23.1" },
     { label: "Prostate",        img: "prostate_2.png",      datasets: "Psi-AVA",         videos: "8",     hours: "20.45" },
-    { label: "Hand Skill",    img: "skill_training.png",      datasets: "Alxsuture, JIGSAWS, Youtube", videos: "11,034",    hours: "127.3" }, 
+    { label: "skill training",    img: "skill_training.png",      datasets: "Alxsuture, JIGSAWS, Youtube", videos: "11,034",    hours: "127.3" }, 
   ];
 
   let htmlContent = "";
